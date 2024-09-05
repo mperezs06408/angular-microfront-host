@@ -1,0 +1,19 @@
+<h1>Selected Characters</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Character Name</th>
+      <th>Quantity</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let character of charactersInfo">
+      <td>{{ character.id }}</td>
+      <td>{{ character.name }}</td>
+      <td>{{ character.quantity }}</td>
+    </tr>
+  </tbody>
+</table>
+<button (click)="cleanCharactersData()">CLEAN CART</button>

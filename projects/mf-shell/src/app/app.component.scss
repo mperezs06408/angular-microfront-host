@@ -1,0 +1,17 @@
+.container {
+  background-color: yellow;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 1rem;
+  margin-bottom: 1rem;
+}
+
+.cart {
+  &__title {
+    font-size: 2rem;
+    line-height: 1.5;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+}

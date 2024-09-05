@@ -1,0 +1,24 @@
+<section class="shopping__container">
+  <div class="character__container" *ngFor="let character of characters">
+    <img
+      class="character__img"
+      [src]="character.image"
+      [alt]="character.name"
+    />
+    <p class="character__text">
+      <strong> name: </strong>
+      {{ character.name }}
+    </p>
+    <p class="character__text">
+      <strong> gender: </strong>
+      {{ character.gender }}
+    </p>
+    <p class="character__text">
+      <strong> status: </strong>
+      {{ character.status }}
+    </p>
+    <button class="character__btn" (click)="onAddCharacterToCart(character)">
+      <p>Add</p>
+    </button>
+  </div>
+</section>

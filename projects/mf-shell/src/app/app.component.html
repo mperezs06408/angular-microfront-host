@@ -1,0 +1,8 @@
+<div class="container">
+  <h1 class="cart__title"><a routerLink="/">Shell</a></h1>
+  <span class="cart__count">
+    <a routerLink="/payment">Card items: </a>
+    {{ commonsLibService.channelPayment$ | async }}
+  </span>
+</div>
+<router-outlet></router-outlet>
