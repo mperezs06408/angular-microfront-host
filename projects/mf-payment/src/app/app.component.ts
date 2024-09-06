@@ -3,7 +3,6 @@ import { Component, OnDestroy } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonsLibService } from '@commons-lib';
 import { Subscription, forkJoin, map } from 'rxjs';
-import { CharacterServiceService } from '../services/character-service.service';
 
 @Component({
   selector: 'app-payment',
@@ -18,13 +17,12 @@ export class AppComponent implements OnDestroy {
   charactersInfo: any = [];
   private charactersSubscription: Subscription;
 
-  constructor(
-    private _cartInfo: CommonsLibService,
-    private _characterService: CharacterServiceService
-  ) {
-    this.cardData = this._cartInfo.charactersList;
+  constructor(private _commonLib: CommonsLibService) {
+    this.cardData = this._commonLib.charactersList;
     this.charactersSubscription = forkJoin(
-      this.cardData.map((i) => this._characterService.getSingleCharacter(i.id))
+      this.cardData.map((i) =>
+        this._commonLib.charactersGateway.getCharacterById(i.id)
+      )
     )
       .pipe(
         map((c) => {
@@ -49,6 +47,6 @@ export class AppComponent implements OnDestroy {
     this.charactersInfo = [];
     this.cardData = [];
 
-    this._cartInfo.cleanCharactersList();
+    this._commonLib.cleanCharactersList();
   }
 }

@@ -1,6 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { CharactersServiceService } from '../services/characters-service.service';
 import { CommonModule } from '@angular/common';
 import { Character } from '../../utils/interfaces/services/charactersService.interface';
 import { Subscription } from 'rxjs';
@@ -18,19 +17,16 @@ export class AppComponent implements OnDestroy {
   characters: Character[] = [];
   private charactersSubscription: Subscription;
 
-  constructor(
-    private _characters: CharactersServiceService,
-    private _updateCart: CommonsLibService
-  ) {
-    this.charactersSubscription = this._characters
-      .getCharacters()
+  constructor(private _commonLib: CommonsLibService) {
+    this.charactersSubscription = this._commonLib.charactersGateway
+      .getAllCharacters()
       .subscribe((value) => {
         this.characters = value;
       });
   }
 
   public onAddCharacterToCart(character: Character) {
-    this._updateCart.sendData(character.id);
+    this._commonLib.sendData(character.id);
   }
 
   ngOnDestroy(): void {

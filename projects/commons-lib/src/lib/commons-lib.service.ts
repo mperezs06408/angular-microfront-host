@@ -1,6 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Item } from '../utils/interfaces/commonItem.interface';
 import { BehaviorSubject } from 'rxjs';
+import { CharactersApiService } from '../infrastructure/gateways/characters-api.service';
+import { LocalstorageControllerService } from '../infrastructure/controller/localstorage/localstorage-controller.service';
+
+export interface Item {
+  quantity: number;
+  id: number;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +18,13 @@ export class CommonsLibService {
   private _channelSource = new BehaviorSubject<number>(0);
   channelPayment$ = this._channelSource.asObservable();
 
-  constructor() {}
+  constructor(
+    private _localStorageController: LocalstorageControllerService,
+    public charactersGateway: CharactersApiService
+  ) {
+    this._localStorageController.localStorageItemName =
+      this.localStorageItemName;
+  }
 
   private onCountCharactersQuantity() {
     this._channelSource.next(
@@ -42,23 +54,20 @@ export class CommonsLibService {
 
     this.onCountCharactersQuantity();
 
-    localStorage.setItem(
-      this.localStorateItemName,
-      JSON.stringify(this._characters)
-    );
+    this._localStorageController.setItem(this._characters);
 
     return this._characters;
   }
 
   cleanCharactersList() {
-    localStorage.removeItem(this.localStorageItemName);
+    this._localStorageController.removeItem();
 
     this._characters = [];
     this._channelSource.next(0);
   }
 
   get charactersList() {
-    const valueFromLs = localStorage.getItem(this.localStorageItemName);
+    const valueFromLs = this._localStorageController.getItem();
 
     if (valueFromLs) {
       return JSON.parse(valueFromLs) as Item[];
